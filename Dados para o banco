@@ -1,0 +1,220 @@
+-- Carga de Dados para Testes
+
+INSERT INTO Curso (Cod_Curso,Nome_Curso)
+VALUES
+(1, 'Engenharia de controle e automacao'),
+(2, 'Engenharia de materiais'),
+(3, 'Engenharia Textil'),
+(4, 'Matematica'),
+(5, 'Quimica');
+
+
+INSERT INTO Turma (Cod_Curso, Fase, Num_Alunos)
+VALUES
+(2, '2023/2', 20),
+(1, '2023/1', 10),
+(3, '2023/2', 15);
+
+INSERT INTO Disciplina (Cod_Disciplina, Nome_Disciplina, Num_Alunos, Cod_Disciplina_Depende)
+VALUES
+('BLU3024', 'Cálculo 1', 50, NULL),
+('BLU3025', 'Cálculo 2', 30, 'BLU3024'),
+('BLU3026', 'Cálculo 3', 20, 'BLU3025'),
+('BLU3027', 'Física 1', 30, NULL),
+('BLU3028', 'Física 2', 24, 'BLU3027'),
+('BLU3029', 'Física 3', 30, 'BLU3028'),
+('BLU3010', 'Introdução à Informática', 30, NULL),
+('BLU3011', 'Geometria Analítica', 30, NULL),
+('BLU3012', 'Algoritmos', 30, 'BLU3010'),
+('BLU3013', 'Inglês', 25, NULL),
+('BLU3014', 'História', 28, NULL),
+('BLU3015', 'Química', 25, NULL),
+('BLU3016', 'Economia', 20, 'BLU3024'),
+('BLU3017', 'Filosofia', 25, 'BLU3014'),
+('BLU3018', 'Arte', 20, NULL),
+('BLU3019', 'Sociologia', 15, 'BLU3017');
+
+
+
+INSERT INTO Aluno (Nome_Aluno, Sobrenome_Aluno, CPF, Status_Aluno, Cod_Turma, Sexo, Endereco, Contato, Cod_Curso)
+VALUES
+('Alexei', 'Felipe Paim', 14278914536, 1, 2, 'M', 'Rua das Flores, 123', '(555) 123-4567', 1),
+('Vitor', 'Tempetini', 1520984537, 1, 2, 'M', 'Avenida Principal, 456', '(555) 234-5678', 1),
+('Alexandre', 'Vega', 32968914522, 1, 2, 'M', 'Travessa da Paz, 789', '(555) 345-6789', 4),
+('Beatriz', 'Picinin', 45968914567, 1, 2, 'F', 'Rua da Amizade, 321', '(555) 456-7890', 3),
+('Maria', 'Silva', 21234567890, 1, 1, 'F', 'Rua Principal, 567', '(555) 567-8901', 1),
+('João', 'Pereira', 31234567891, 1, 1, 'M', 'Avenida da Esperança, 234', '(555) 678-9012', 2),
+('Fernanda', 'Oliveira', 41234567892, 1, 1, 'F', 'Rua das Árvores, 876', '(555) 789-0123', 3),
+('Rafael', 'Santos', 51234567893, 1, 1, 'M', 'Avenida dos Sonhos, 987', '(555) 890-1234', 4),
+('Luciana', 'Ferreira', 61234567894, 1, 2, 'F', 'Rua da Felicidade, 543', '(555) 012-3456', 2),
+('Pedro', 'Gomes', 71234567895, 1, 2, 'M', 'Avenida da Harmonia, 654', '(555) 987-6543', 3),
+('Camila', 'Rocha', 81234567896, 1, 2, 'F', 'Rua das Estrelas, 765', '(555) 654-3210', 1),
+('Carlos', 'Almeida', 91234567897, 1, 2, 'M', 'Avenida da União, 876', '(555) 789-4321', 4);
+
+-- Inserir dados fictícios na tabela Historico para os alunos com Cod_Historico personalizado
+INSERT INTO Historico (Cod_Historico, Cod_ID)
+VALUES
+(20000001, 1), -- Alexei
+(20000002, 2), -- Vitor
+(20000003, 3), -- Alexandre
+(20000004, 4), -- Beatriz
+(20000005, 5), -- Maria
+(20000006, 6), -- João
+(20000007, 7), -- Fernanda
+(20000008, 8), -- Rafael
+(20000009, 9), -- Luciana
+(20000010,10), -- Pedro
+(20000011, 11), -- Camila
+(20000012, 12); -- Carlos
+
+
+INSERT INTO Aluno_Disc (Cod_ID, Cod_Disciplina)
+VALUES
+(3, 'BLU3024'), -- Código da disciplina 'Cálculo 1'
+(1, 'BLU3025'), -- Código da disciplina 'Cálculo 2'
+(2, 'BLU3026'); -- Código da disciplina 'Cálculo 3'
+
+
+-- Corrija os códigos de disciplina na inserção da tabela Curso_Disciplina
+
+INSERT INTO Curso_Disciplina (Cod_Curso, Cod_Disciplina, Fase_Disciplina)
+VALUES
+(1, 'BLU3024', 1),   -- Cálculo 1 no Curso 1 (Fase 1)
+(2, 'BLU3025', 2),   -- Cálculo 2 no Curso 2 (Fase 2)
+(3, 'BLU3026', 3),   -- Cálculo 3 no Curso 3 (Fase 3)
+(5, 'BLU3027', 1),   -- Física 1 no Curso 5 (Fase 1)
+(1, 'BLU3025', 2),   -- Cálculo 2 no Curso 1 (Fase 2)
+(2, 'BLU3026', 3),   -- Cálculo 3 no Curso 2 (Fase 2)
+(3, 'BLU3027', 1),   -- Física 1 no Curso 3 (Fase 1)
+(4, 'BLU3028', 2),   -- Física 2 no Curso 4 (Fase 2)
+(1, 'BLU3029', 3),   -- Física 3 no Curso 1 (Fase 3)
+(2, 'BLU3010', 2),  -- Introdução à Informática no Curso 2 (Fase 2)
+(3, 'BLU3011', 1),   -- Geometria Analítica no Curso 3 (Fase 1)
+(4, 'BLU3012', 3),   -- Algoritmos no Curso 4 (Fase 3)
+(5, 'BLU3013', 3),  -- Inglês no Curso 5 (Fase 3)
+(1, 'BLU3014', 4),  -- História no Curso 1 (Fase 4)
+(2, 'BLU3015', 5),  -- Química no Curso 2 (Fase 5)
+(4, 'BLU3016', 7),  -- Economia no Curso 4 (Fase 7)
+(5, 'BLU3017', 8),  -- Filosofia no Curso 5 (Fase 8)
+(1, 'BLU3018', 9),  -- Arte no Curso 1 (Fase 9)
+(2, 'BLU3019', 10); -- Sociologia no Curso 2 (Fase 10)
+
+-- Inserir notas e registros de frequência para o primeiro aluno e curso
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000001, 'BLU3024', 6.4, 80),  -- Inserir uma nota e registro de frequência para Cálculo 1
+(20000001, 'BLU3027', 5, 56),    -- Inserir uma nota e registro de frequência para Física 2
+(20000001, 'BLU3026', 7.4, 78),  -- Inserir uma nota e registro de frequência para Cálculo 3
+(20000001, 'BLU3024', 6.4, 60),  -- Inserir uma nota e registro de frequência para Cálculo 1
+(20000001, 'BLU3027', 5, 97),    -- Inserir uma nota e registro de frequência para Física 2
+(20000001, 'BLU3026', 7.4, 100);  -- Inserir uma nota e registro de frequência para Cálculo 3
+
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000002, 'BLU3024', 6.4, 80),  -- Inserir uma nota e registro de frequência para Cálculo 1
+(20000002, 'BLU3027', 5, 54),    -- Inserir uma nota e registro de frequência para Física 2
+(20000002, 'BLU3026', 2.7, 76),  -- Inserir uma nota e registro de frequência para Cálculo 3
+(20000002, 'BLU3024', 7.9, 79),  -- Inserir uma nota e registro de frequência para Cálculo 1
+(20000002, 'BLU3027', 3, 90),    -- Inserir uma nota e registro de frequência para Física 2
+(20000002, 'BLU3026', 5.4, 80);  -- Inserir uma nota e registro de frequência para Cálculo 3
+
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000003, 'BLU3024', 7.5, 80),  -- Inserir uma nota e registro de frequência para Cálculo 1
+(20000003, 'BLU3027', 4.6, 80),    -- Inserir uma nota e registro de frequência para Física 2
+(20000003, 'BLU3026', 2.7, 80),  -- Inserir uma nota e registro de frequência para Cálculo 3
+(20000003, 'BLU3024', 4.9, 80),  -- Inserir uma nota e registro de frequência para Cálculo 1
+(20000003, 'BLU3027', 9, 80),    -- Inserir uma nota e registro de frequência para Física 2
+(20000003, 'BLU3026', 5.4, 80);  -- Inserir uma nota e registro de frequência para Cálculo 3
+
+-- Utilize os números gerados aleatoriamente abaixo
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000004, 'BLU3011', 9.2, 56),
+(20000004, 'BLU3017', 5.7, 84),
+(20000004, 'BLU3013', 4.1, 72),
+(20000004, 'BLU3025', 7.8, 45),
+(20000004, 'BLU3019', 8.6, 61),
+(20000004, 'BLU3018', 3.9, 92);
+
+-- Utilize os números gerados aleatoriamente abaixo
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000005, 'BLU3017', 4.8, 68),
+(20000005, 'BLU3010', 9.5, 43),
+(20000005, 'BLU3013', 6.7, 79),
+(20000005, 'BLU3011', 8.1, 57),
+(20000005, 'BLU3026', 7.2, 67),
+(20000005, 'BLU3015', 5.9, 92);
+
+-- Utilize os números gerados aleatoriamente abaixo
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000006, 'BLU3013', 8.7, 68),
+(20000006, 'BLU3026', 7.9, 78),
+(20000006, 'BLU3019', 4.2, 56),
+(20000006, 'BLU3011', 5.6, 91),
+(20000006, 'BLU3010', 6.8, 43),
+(20000006, 'BLU3015', 8.1, 73);
+
+-- Utilize os números gerados aleatoriamente abaixo
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000007, 'BLU3017', 4.3, 67),
+(20000007, 'BLU3012', 9.8, 78),
+(20000007, 'BLU3018', 7.2, 62),
+(20000007, 'BLU3016', 6.5, 45),
+(20000007, 'BLU3025', 8.9, 88),
+(20000007, 'BLU3014', 9.3, 50);
+
+-- Utilize os números gerados aleatoriamente abaixo
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000008, 'BLU3012', 6.1, 94),
+(20000008, 'BLU3016', 5.4, 57),
+(20000008, 'BLU3015', 8.4, 71),
+(20000008, 'BLU3019', 4.7, 84),
+(20000008, 'BLU3024', 8.5, 76),
+(20000008, 'BLU3014', 6.9, 68);
+
+-- Utilize os números gerados aleatoriamente abaixo
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000009, 'BLU3025', 7.3, 88),
+(20000009, 'BLU3018', 4.6, 67),
+(20000009, 'BLU3024', 9.1, 71),
+(20000009, 'BLU3010', 6.7, 59),
+(20000009, 'BLU3011', 5.8, 74),
+(20000009, 'BLU3015', 4.5, 90);
+
+-- Utilize os números gerados aleatoriamente abaixo
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000010, 'BLU3017', 9.4, 61),
+(20000010, 'BLU3019', 5.7, 67),
+(20000010, 'BLU3024', 7.8, 82),
+(20000010, 'BLU3014', 8.2, 73),
+(20000010, 'BLU3010', 4.9, 49),
+(20000010, 'BLU3012', 6.6, 75);
+
+-- Utilize os números gerados aleatoriamente abaixo
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000011, 'BLU3010', 7.1, 57),
+(20000011, 'BLU3018', 9.5, 60),
+(20000011, 'BLU3019', 5.9, 86),
+(20000011, 'BLU3016', 6.3, 69),
+(20000011, 'BLU3013', 4.4, 53),
+(20000011, 'BLU3026', 7.2, 70);
+
+-- Utilize os números gerados aleatoriamente abaixo
+INSERT INTO Disc_Hist (Cod_Historico, Cod_Disciplina, Nota, Frequência)
+VALUES
+(20000012, 'BLU3010', 6.8, 64),
+(20000012, 'BLU3013', 8.3, 78),
+(20000012, 'BLU3024', 9.0, 41),
+(20000012, 'BLU3015', 4.9, 80),
+(20000012, 'BLU3024', 7.9, 47),
+(20000012, 'BLU3025', 5.4, 90);
+
+
