@@ -1,0 +1,76 @@
+-- Criar Banco
+CREATE DATABASE db_Faculdade;
+USE db_Faculdade;
+
+-- Criar TabelasNome_AlunoSobrenome_Aluno
+
+CREATE TABLE Curso (
+ Cod_Curso INT PRIMARY KEY AUTO_INCREMENT,
+ Nome_Curso VARCHAR(40)
+);
+
+CREATE TABLE Turma (
+ Cod_Turma INT PRIMARY KEY AUTO_INCREMENT,
+ Cod_Curso INT,
+ Fase VARCHAR(8),
+ Num_Alunos INT,
+CONSTRAINT fk_Cod_Curso FOREIGN KEY (Cod_Curso) REFERENCES Curso (Cod_Curso)
+);
+
+CREATE TABLE Disciplina (
+ Cod_Disciplina VARCHAR(7) PRIMARY KEY,
+ Nome_Disciplina VARCHAR(30),
+ Num_Alunos INT NOT NULL,
+ Cod_Disciplina_Depende VARCHAR(7) NULL,
+ CONSTRAINT fk_Cod_Disciplina FOREIGN KEY (Cod_Disciplina_Depende) REFERENCES Disciplina (Cod_Disciplina)
+);
+
+
+CREATE TABLE Curso_Disciplina (
+ Cod_Curso INT NOT NULL,
+ Cod_Disciplina VARCHAR(7) NOT NULL,
+ Fase_Disciplina INT,
+ PRIMARY KEY (Cod_Curso, Cod_Disciplina), 
+ CONSTRAINT fk_Cod_Curso_Disci FOREIGN KEY (Cod_Curso) REFERENCES Curso (Cod_Curso),
+ CONSTRAINT fk_Cod_Disciplina_Disci FOREIGN KEY (Cod_Disciplina) REFERENCES Disciplina (Cod_Disciplina)
+);
+
+CREATE TABLE Aluno (
+ Cod_ID INT PRIMARY KEY AUTO_INCREMENT,
+ Nome_Aluno VARCHAR(20) NOT NULL,
+ Sobrenome_Aluno VARCHAR(20) NOT NULL,
+ CPF VARCHAR(11) NOT NULL,
+ Status_Aluno TINYINT(1) NOT NULL,
+ Cod_Turma INT,
+ Sexo VARCHAR(1),
+ Endereco VARCHAR(40),
+ Contato VARCHAR(20),
+ Cod_Curso INT,
+ CONSTRAINT fk_Cod_Turma_Aluno FOREIGN KEY(Cod_Turma) REFERENCES Turma (Cod_Turma),
+ CONSTRAINT fk_Cod_Curso_Aluno FOREIGN KEY(Cod_Curso) REFERENCES Curso (Cod_Curso)
+);
+
+CREATE TABLE Aluno_Disc (
+ Cod_ID INT NOT NULL,
+ Cod_Disciplina VARCHAR(7) NOT NULL,
+ PRIMARY KEY (Cod_ID, Cod_Disciplina),
+ CONSTRAINT fk_Cod_ID_Aluno FOREIGN KEY (Cod_ID) REFERENCES Aluno (Cod_ID),
+ CONSTRAINT fk_Cod_Disciplina_Aluno FOREIGN KEY (Cod_Disciplina) REFERENCES Disciplina (Cod_Disciplina)
+);
+
+CREATE TABLE Historico (
+ Cod_Historico INT PRIMARY KEY AUTO_INCREMENT,
+ Cod_ID INT NOT NULL,
+ CONSTRAINT fk_Cod_Cod_ID FOREIGN KEY (Cod_ID) REFERENCES Aluno (Cod_ID)
+);
+
+CREATE TABLE Disc_Hist (
+ Cod_Historico INT NOT NULL,
+ Cod_Disciplina VARCHAR(7) NOT NULL,
+ Nota DECIMAL(10, 2),
+ Frequência DECIMAL(10, 2)
+);
+
+-- --------------------------------------------------------------------------------------------------
+
+
