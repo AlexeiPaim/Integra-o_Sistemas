@@ -1,0 +1,173 @@
+/*Listar todos os alunos cadastrados no banco de dados em ordem de código identificador;*/
+SELECT *
+FROM Aluno
+ORDER BY Cod_id;
+
+/*Listar todos os alunos cadastrados no banco de dados em ordem alfabética de nome;*/
+SELECT *
+FROM Aluno
+ORDER BY Nome_Aluno, Sobrenome_Aluno;
+
+/*Listar todas as disciplinas de um determinado curso (a ser informado na consulta SQL) 
+	ordenadas pela fase em que ocorrem e, como segundo critério, pelo seu código;*/
+    
+SELECT D.Cod_Disciplina, D.Nome_Disciplina, D.Num_Alunos, CD.Fase_Disciplina
+FROM Curso C
+INNER JOIN Curso_Disciplina CD ON C.Cod_Curso = CD.Cod_Curso
+INNER JOIN Disciplina D ON CD.Cod_Disciplina = D.Cod_Disciplina
+WHERE C.Nome_Curso = 'Engenharia de controle e automacao' -- escolher o nome do Curso
+ORDER BY CD.Fase_Disciplina, D.Cod_Disciplina;
+
+/*Listar os nomes das disciplinas que são oferecidas em mais de um curso;*/
+
+SELECT D.Nome_Disciplina
+FROM Disciplina D
+INNER JOIN Curso_Disciplina CD ON D.Cod_Disciplina = CD.Cod_Disciplina
+GROUP BY D.Nome_Disciplina
+HAVING COUNT(DISTINCT CD.Cod_Curso) > 1;
+
+/*Listar código e o nome das disciplinas que são pré-requisito para uma determinada disciplina, cujo código deve ser informado na consulta SQL.*/
+
+SELECT D.Cod_Disciplina, D.Nome_Disciplina
+FROM Disciplina D
+INNER JOIN Disciplina DP ON D.Cod_Disciplina = DP.Cod_Disciplina_Depende
+WHERE DP.Cod_Disciplina = 'BLU3025';
+
+
+/*istar o nome de todos os alunos de um determinado curso (a ser informado na consulta SQL) e a 
+média geral obtida por cada um deles. Essa média é a média de todas as 
+notas finais obtidas pelo aluno. A consulta deve ser ordenada de forma decrescente pelas
+ médias gerais dos alunos (alunos com média maior aparecem primeiro).*/
+
+SELECT A.Nome_Aluno, A.Sobrenome_Aluno, AVG(DH.Nota) AS MediaGeral
+FROM Aluno AS A
+LEFT JOIN Historico AS H ON A.Cod_ID = H.Cod_ID
+LEFT JOIN Disc_Hist AS DH ON H.Cod_Historico = DH.Cod_Historico
+LEFT JOIN Curso AS C ON A.Cod_Curso = C.Cod_Curso
+WHERE C.Nome_Curso = 'Engenharia de controle e automacao'
+GROUP BY A.Cod_ID
+ORDER BY MediaGeral DESC;
+
+/*Listar código e o nome das disciplinas que são pré-requisito para uma determinada disciplina, 
+cujo código deve ser informado na consulta SQL.*/
+
+SELECT Disciplina.Nome_Disciplina
+FROM Disciplina
+LEFT JOIN Curso_Disciplina ON Disciplina.Cod_Disciplina = Curso_Disciplina.Cod_Disciplina
+LEFT JOIN Aluno ON Curso_Disciplina.Cod_Curso = Aluno.Cod_Curso
+LEFT JOIN Aluno_Disc ON Aluno.Cod_ID = Aluno_Disc.Cod_ID AND Disciplina.Cod_Disciplina = Aluno_Disc.Cod_Disciplina
+WHERE Aluno.Cod_ID = 1
+   AND (Disciplina.Cod_Disciplina_Depende IS NULL OR Aluno_Disc.Cod_ID IS NOT NULL)
+GROUP BY Disciplina.Nome_Disciplina;
+
+
+/*Listar as disciplinas que requerem a aprovação em apenas um pré-requisito para poderem 
+ser cursadas por um determinado aluno (cujo identificador deve ser informado na consulta SQL)*/
+
+SELECT Disciplina.Nome_Disciplina
+FROM Disciplina
+INNER JOIN Disciplina AS Prerequisito ON Disciplina.Cod_Disciplina_Depende = Prerequisito.Cod_Disciplina
+LEFT JOIN Aluno_Disc ON Aluno_Disc.Cod_Disciplina = Prerequisito.Cod_Disciplina AND Aluno_Disc.Cod_ID = 1 -- esolher cod_ID Aluno
+WHERE Aluno_Disc.Cod_Disciplina IS NOT NULL
+GROUP BY Disciplina.Nome_Disciplina
+HAVING COUNT(Prerequisito.Cod_Disciplina) = 1;
+
+
+
+
+SELECT CONCAT(Nome_Aluno, ' ', Sobrenome_Aluno) AS Nome_Completo, AVG(Nota) AS Media_Nota
+FROM Aluno
+LEFT JOIN Historico ON Aluno.Cod_ID = Historico.Cod_ID
+LEFT JOIN Disc_Hist ON Historico.Cod_Historico = Disc_Hist.Cod_Historico
+GROUP BY Nome_Completo;
+
+
+-- Listar todas as disciplinas de um determinado curso (a ser informado na consulta SQL) 
+-- ordenadas pela  fase_displina  em que ocorrem e, como segundo critério, pelo seu 
+-- cod_discplina;
+
+SELECT D.Cod_Disciplina, D.Nome_Disciplina, CD.Fase_Disciplina
+FROM Disciplina D
+INNER JOIN Curso_Disciplina CD ON D.Cod_Disciplina = CD.Cod_Disciplina
+WHERE CD.Cod_Curso = 2
+ORDER BY CD.Fase_Disciplina, D.Cod_Disciplina;
+
+/*Listar código e o nome das disciplinas que são pré-requisito para uma 
+determinada disciplina, cujo código deve ser informado na consulta SQL. */
+
+SELECT D.Cod_Disciplina, D.Nome_Disciplina
+FROM Disciplina D
+INNER JOIN Disciplina DP ON D.Cod_Disciplina = DP.Cod_Disciplina_Depende
+WHERE DP.Cod_Disciplina = 'BLU3025';
+
+
+SELECT CONCAT(Aluno.Nome_Aluno, ' ', Aluno.Sobrenome_Aluno) AS Nome_Aluno, 
+       Disciplina.Nome_Disciplina, 
+       Disc_Hist.Nota, 
+       Disc_Hist.Frequência
+FROM Aluno
+INNER JOIN Historico ON Aluno.Cod_ID = Historico.Cod_ID
+INNER JOIN Disc_Hist ON Historico.Cod_Historico = Disc_Hist.Cod_Historico
+INNER JOIN Disciplina ON Disc_Hist.Cod_Disciplina = Disciplina.Cod_Disciplina
+WHERE Aluno.Cod_ID = 1  -- Substitua pelo Cod_ID do aluno desejado
+      AND Disc_Hist.Nota > 7
+      AND Disc_Hist.Frequência > 70;
+
+
+
+
+SELECT Disciplina.Nome_Disciplina, Disciplina.Cod_Disciplina
+FROM Curso
+JOIN Curso_Disciplina ON Curso.Cod_Curso = Curso_Disciplina.Cod_Curso
+JOIN Disciplina ON Curso_Disciplina.Cod_Disciplina = Disciplina.Cod_Disciplina
+WHERE Curso.Cod_Curso = 1;
+
+
+SELECT D.Nome_Disciplina
+FROM Disciplina D
+JOIN Curso_Disciplina CD ON D.Cod_Disciplina = CD.Cod_Disciplina
+GROUP BY D.Cod_Disciplina, D.Nome_Disciplina
+HAVING COUNT(CD.Cod_Curso) > 1;
+
+
+
+
+-- Calcular a média das notas de cada aluno
+SELECT dh.Cod_Historico AS Cod_Aluno, AVG(dh.Nota) AS Media_Notas
+FROM Disc_Hist dh
+GROUP BY dh.Cod_Historico;
+
+-- Calcular a média das notas de cada aluno e exibir o nome
+SELECT a.Nome_Aluno, a.Sobrenome_Aluno, dh.Cod_Historico AS Cod_Aluno, AVG(dh.Nota) AS Media_Notas
+FROM Aluno a
+JOIN Disc_Hist dh ON a.Cod_ID = dh.Cod_Historico
+GROUP BY Cod_Aluno;
+
+
+SELECT CONCAT(Aluno.Nome_Aluno, ' ', Aluno.Sobrenome_Aluno) AS Nome_Completo,
+       AVG(Disc_Hist.Nota) AS Media_Geral
+FROM Aluno
+INNER JOIN Curso ON Aluno.Cod_Curso = Curso.Cod_Curso
+LEFT JOIN Historico ON Aluno.Cod_ID = Historico.Cod_ID
+LEFT JOIN Disc_Hist ON Historico.Cod_Historico = Disc_Hist.Cod_Historico
+WHERE Curso.Nome_Curso = 'Engenharia de materiais'
+GROUP BY Nome_Completo
+ORDER BY Media_Geral DESC;
+
+SELECT Disciplina.Nome_Disciplina
+FROM Disciplina
+LEFT JOIN Curso_Disciplina ON Disciplina.Cod_Disciplina = Curso_Disciplina.Cod_Disciplina
+LEFT JOIN Aluno ON Curso_Disciplina.Cod_Curso = Aluno.Cod_Curso
+LEFT JOIN Aluno_Disc ON Aluno.Cod_ID = Aluno_Disc.Cod_ID AND Disciplina.Cod_Disciplina = Aluno_Disc.Cod_Disciplina
+WHERE Aluno.Cod_ID = 1
+   AND (Disciplina.Cod_Disciplina_Depende IS NULL OR Aluno_Disc.Cod_ID IS NOT NULL)
+GROUP BY Disciplina.Nome_Disciplina;
+
+SELECT Disciplina.Nome_Disciplina
+FROM Disciplina
+INNER JOIN Disciplina AS Prerequisito ON Disciplina.Cod_Disciplina_Depende = Prerequisito.Cod_Disciplina
+LEFT JOIN Aluno_Disc ON Aluno_Disc.Cod_Disciplina = Prerequisito.Cod_Disciplina AND Aluno_Disc.Cod_ID = 1
+WHERE Aluno_Disc.Cod_Disciplina IS NOT NULL
+GROUP BY Disciplina.Nome_Disciplina
+HAVING COUNT(Prerequisito.Cod_Disciplina) = 1;
+
